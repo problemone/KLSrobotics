@@ -2,6 +2,8 @@ package org.usfirst.frc.team6962.robot;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.RobotDrive;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -13,11 +15,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * directory.
  */
 public class Robot extends IterativeRobot {
+	RobotDrive myDrive;
 	final String defaultAuto = "Default";
 	final String customAuto = "My Auto";
 	
-	double joystickUDValue;
-	double joystickLRValue;
+	double joystickLValue;
+	double joystickRValue;
 	
 	String autoSelected;
 	SendableChooser<String> chooser = new SendableChooser<>();
@@ -28,13 +31,18 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void robotInit() {
-		Joystick joystickUD = new Joystick(1);
-		Joystick joystickLR = new Joystick(2);
-		joystickUDValue = joystickUD.getRawAxis(1);
-		joystickLRValue = joystickLR.getRawAxis(2);
+		myDrive = new RobotDrive(1,2,3,4);
+		Joystick joystickL = new Joystick(1);
+		Joystick joystickR = new Joystick(2);
+		joystickLValue = joystickL.getRawAxis(1);
+		joystickRValue = joystickR.getRawAxis(2);
 		chooser.addDefault("Default Auto", defaultAuto);
 		chooser.addObject("My Auto", customAuto);
 		SmartDashboard.putData("Auto choices", chooser);
+		while (isOperatorControl() && isEnabled()) {
+	    		myDrive.tankDrive(joystickL,  joystickR);
+	    		Timer.delay(0.01);
+	    	}
 	}
 
 	/**
