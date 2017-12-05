@@ -2,6 +2,8 @@ package org.usfirst.frc.team6962.robot;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.RobotDrive;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -13,40 +15,41 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * directory.
  */
 public class Robot extends IterativeRobot {
+	RobotDrive myDrive;
 	final String defaultAuto = "Default";
 	final String customAuto = "My Auto";
-	
-	double joystickUDValue;
-	double joystickLRValue;
+
+	double joystickLValue;
+	double joystickRValue;
+
+	Joystick joystickL = new Joystick(1);
+	Joystick joystickR = new Joystick(2);
 	
 	String autoSelected;
 	SendableChooser<String> chooser = new SendableChooser<>();
 
 	/**
-	 * This function is run when the robot is first started up and should be
-	 * used for any initialization code.
+	 * This function is run when the robot is first started up and should be used
+	 * for any initialization code.
 	 */
 	@Override
 	public void robotInit() {
-		Joystick joystickUD = new Joystick(1);
-		Joystick joystickLR = new Joystick(2);
-		joystickUDValue = joystickUD.getRawAxis(1);
-		joystickLRValue = joystickLR.getRawAxis(2);
 		chooser.addDefault("Default Auto", defaultAuto);
 		chooser.addObject("My Auto", customAuto);
 		SmartDashboard.putData("Auto choices", chooser);
+		myDrive = new RobotDrive(1, 2, 3, 4);
 	}
 
 	/**
 	 * This autonomous (along with the chooser code above) shows how to select
-	 * between different autonomous modes using the dashboard. The sendable
-	 * chooser code works with the Java SmartDashboard. If you prefer the
-	 * LabVIEW Dashboard, remove all of the chooser code and uncomment the
-	 * getString line to get the auto name from the text box below the Gyro
+	 * between different autonomous modes using the dashboard. The sendable chooser
+	 * code works with the Java SmartDashboard. If you prefer the LabVIEW Dashboard,
+	 * remove all of the chooser code and uncomment the getString line to get the
+	 * auto name from the text box below the Gyro
 	 *
 	 * You can add additional auto modes by adding additional comparisons to the
-	 * switch structure below with additional strings. If using the
-	 * SendableChooser make sure to add them to the chooser code above as well.
+	 * switch structure below with additional strings. If using the SendableChooser
+	 * make sure to add them to the chooser code above as well.
 	 */
 	@Override
 	public void autonomousInit() {
@@ -77,6 +80,9 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void teleopPeriodic() {
+		joystickLValue = joystickL.getRawAxis(1);
+		joystickRValue = joystickR.getRawAxis(2);
+		myDrive.tankDrive(joystickLValue, joystickRValue);
 	}
 
 	/**
