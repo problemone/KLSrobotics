@@ -22,8 +22,8 @@ public class Robot extends IterativeRobot {
 	double joystickLValue;
 	double joystickRValue;
 
-	Joystick joystickL = new Joystick(1);
-	Joystick joystickR = new Joystick(2);
+	Joystick joystickL = new Joystick(0);
+	//Joystick joystickR = new Joystick(2);
 	
 	String autoSelected;
 	SendableChooser<String> chooser = new SendableChooser<>();
@@ -37,9 +37,9 @@ public class Robot extends IterativeRobot {
 		chooser.addDefault("Default Auto", defaultAuto);
 		chooser.addObject("My Auto", customAuto);
 		SmartDashboard.putData("Auto choices", chooser);
-		myDrive = new RobotDrive(1, 2, 3, 4);
+		myDrive = new RobotDrive(0, 1);
 	}
-
+ 
 	/**
 	 * This autonomous (along with the chooser code above) shows how to select
 	 * between different autonomous modes using the dashboard. The sendable chooser
@@ -80,8 +80,8 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void teleopPeriodic() {
-		joystickLValue = joystickL.getRawAxis(1);
-		joystickRValue = joystickR.getRawAxis(2);
+		joystickLValue = -joystickL.getRawAxis(1)/4;
+		joystickRValue = -joystickL.getRawAxis(5)/4;
 		myDrive.tankDrive(joystickLValue, joystickRValue);
 	}
 
