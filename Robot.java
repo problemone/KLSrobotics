@@ -64,13 +64,18 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void autonomousPeriodic() {
+		Timer t = new Timer();
+		t.reset();
+		t.start();
 		switch (autoSelected) {
 		case customAuto:
 			// Put custom auto code here
 			break;
 		case defaultAuto:
 		default:
-			// Put default auto code here
+			if(t.get() < 0.001) {
+				myDrive.tankDrive(-0.5, -0.5);
+			}
 			break;
 		}
 	}
@@ -80,8 +85,12 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void teleopPeriodic() {
-		joystickLValue = -joystickL.getRawAxis(1)/4;
-		joystickRValue = -joystickL.getRawAxis(5)/4;
+		joystickLValue = joystickL.getRawAxis(5);
+		joystickRValue = joystickL.getRawAxis(1);
+		if(((joystickLValue > 0 && joystickRValue > 0) || (joystickLValue < 0 && joystickRValue < 0)) && (joystickLValue - joystickRValue <= 0.3 && joystickLValue - joystickRValue >= -0.3))
+		{
+			joystickRValue = joystickLValue;
+		}
 		myDrive.tankDrive(joystickLValue, joystickRValue);
 	}
 
