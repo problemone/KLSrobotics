@@ -62,6 +62,7 @@ public class Robot extends IterativeRobot {
 	/**
 	 * This function is called periodically during autonomous
 	 */
+	@SuppressWarnings("deprecation")
 	@Override
 	public void autonomousPeriodic() {
 		Timer t = new Timer();
@@ -73,8 +74,13 @@ public class Robot extends IterativeRobot {
 			break;
 		case defaultAuto:
 		default:
-			if(t.get() < 0.001) {
-				myDrive.tankDrive(-0.5, -0.5);
+			while(t.get() <= 0.001) {
+				if(t.get() > 0) {
+					break;
+				}
+				else {
+					myDrive.tankDrive(-0.5, -0.5);
+				}
 			}
 			break;
 		}
@@ -85,12 +91,41 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void teleopPeriodic() {
-		joystickLValue = joystickL.getRawAxis(5);
+		joystickRValue = joystickL.getRawAxis(3) - joystickL.getRawAxis(2);
+		joystickLValue = joystickL.getRawAxis(3) - joystickL.getRawAxis(2);
+		if(joystickL.getRawAxis(0) > 0)
+		{
+			if(joystickL.getRawAxis(3) >= joystickL.getRawAxis(2))
+			{
+				joystickLValue += joystickL.getRawAxis(0);
+				joystickRValue -= joystickL.getRawAxis(0);
+			}
+			else if(joystickL.getRawAxis(3) < joystickL.getRawAxis(2))
+			{
+				joystickLValue -= joystickL.getRawAxis(0);
+				joystickRValue += joystickL.getRawAxis(0);
+			}
+		}
+		else if(joystickL.getRawAxis(0) < 0)
+		{
+			if(joystickL.getRawAxis(3) >= joystickL.getRawAxis(2))
+			{
+				joystickRValue -= joystickL.getRawAxis(0);
+				joystickLValue += joystickL.getRawAxis(0);
+			}
+			else if(joystickL.getRawAxis(3) < joystickL.getRawAxis(2))
+			{
+				joystickRValue += joystickL.getRawAxis(0);
+				joystickLValue -= joystickL.getRawAxis(0);
+			}
+		}
+		/*joystickLValue = joystickL.getRawAxis(5);
 		joystickRValue = joystickL.getRawAxis(1);
-		if(((joystickLValue > 0 && joystickRValue > 0) || (joystickLValue < 0 && joystickRValue < 0)) && (joystickLValue - joystickRValue <= 0.3 && joystickLValue - joystickRValue >= -0.3))
+		if(((joystickLValue > 0 && joystickRValue > 0) || (joystickLValue < 0 && joystickRValue < 0)) && (joystickLValue - joystickRValue <= 0.5 && joystickLValue - joystickRValue >= -0.5))
 		{
 			joystickRValue = joystickLValue;
-		}
+			joystickLValue = joystickRValue;
+		}*/
 		myDrive.tankDrive(joystickLValue, joystickRValue);
 	}
 
