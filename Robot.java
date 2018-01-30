@@ -18,6 +18,7 @@ public class Robot extends IterativeRobot {
 	RobotDrive myDrive;
 	final String defaultAuto = "Default";
 	final String customAuto = "My Auto";
+	int i = 0;
 
 	double joystickLValue;
 	double joystickRValue;
@@ -57,6 +58,13 @@ public class Robot extends IterativeRobot {
 		// autoSelected = SmartDashboard.getString("Auto Selector",
 		// defaultAuto);
 		System.out.println("Auto selected: " + autoSelected);
+		for(int i = 0; i <= 1000; i++) {
+			joystickRValue = 0.54;
+			joystickLValue = 0.5;
+			myDrive.tankDrive(joystickLValue, joystickRValue);
+		}
+		
+		
 	}
 
 	/**
@@ -64,26 +72,22 @@ public class Robot extends IterativeRobot {
 	 */
 	@SuppressWarnings("deprecation")
 	@Override
+	
 	public void autonomousPeriodic() {
-		Timer t = new Timer();
-		t.reset();
-		t.start();
-		switch (autoSelected) {
-		case customAuto:
-			// Put custom auto code here
-			break;
-		case defaultAuto:
-		default:
-			while(t.get() <= 0.001) {
-				if(t.get() > 0) {
-					break;
-				}
-				else {
-					myDrive.tankDrive(-0.5, -0.5);
-				}
-			}
-			break;
+		i++;
+		if(i <= 100) {
+			myDrive.arcadeDrive(1,0);
 		}
+		else
+		{
+			myDrive.arcadeDrive(0,0);
+		}
+		/*int i = 0;
+		while(i<1) {
+			myDrive.arcadeDrive(1,0);
+			i++;
+		}*/
+		
 	}
 
 	/**
@@ -91,6 +95,7 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void teleopPeriodic() {
+		/*
 		joystickRValue = joystickL.getRawAxis(3) - joystickL.getRawAxis(2);
 		joystickLValue = joystickL.getRawAxis(3) - joystickL.getRawAxis(2);
 		if(joystickL.getRawAxis(0) > 0)
@@ -118,14 +123,15 @@ public class Robot extends IterativeRobot {
 				joystickRValue += joystickL.getRawAxis(0);
 				joystickLValue -= joystickL.getRawAxis(0);
 			}
-		}
-		/*joystickLValue = joystickL.getRawAxis(5);
-		joystickRValue = joystickL.getRawAxis(1);
-		if(((joystickLValue > 0 && joystickRValue > 0) || (joystickLValue < 0 && joystickRValue < 0)) && (joystickLValue - joystickRValue <= 0.5 && joystickLValue - joystickRValue >= -0.5))
-		{
-			joystickRValue = joystickLValue;
-			joystickLValue = joystickRValue;
 		}*/
+		joystickLValue = -joystickL.getRawAxis(1);
+		joystickRValue = -joystickL.getRawAxis(5);
+		if(((joystickLValue > 0 && joystickRValue > 0) || (joystickLValue < 0 && joystickRValue < 0)) && (joystickLValue - joystickRValue <= 0.3 && joystickLValue - joystickRValue >= -0.3))
+		{
+			
+				joystickRValue = joystickLValue*(1+0.04/0.5);
+				joystickLValue = joystickRValue;
+		}
 		myDrive.tankDrive(joystickLValue, joystickRValue);
 	}
 
