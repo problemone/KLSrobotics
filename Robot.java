@@ -129,6 +129,7 @@ public class Robot extends IterativeRobot {
 				joystickLValue = joystickRValue;
 		}
 		myDrive.tankDrive(joystickLValue, joystickRValue);
+		myDrive.tankDrive((joystickArmUpValue/100)*30,(joystickArmUpValue/100)*30);
 		
 	}
 
