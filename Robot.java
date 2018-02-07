@@ -23,12 +23,13 @@ public class Robot extends IterativeRobot {
 
 	double joystickLValue;
 	double joystickRValue;
-	double joystickArmUpValue;
-	double joystickArmDownValue;
-	double joystickIntakeVale;
-	double joystickShoot;
+	double joystickArmValue;
+	boolean buttonGripperIntake;
+	boolean buttonGripperRelease;
+	
 
-	Joystick joystick = new Joystick(0);
+	Joystick joystick0 = new Joystick(0);
+	Joystick joystick1 = new Joystick(1);
 	
 	String autoSelected;
 	SendableChooser<String> chooser = new SendableChooser<>();
@@ -117,10 +118,11 @@ public class Robot extends IterativeRobot {
 				joystickLValue -= joystickL.getRawAxis(0);
 			}
 		}*/
-		joystickLValue = -joystick.getRawAxis(1);
-		joystickRValue = -joystick.getRawAxis(5);
-		joystickArmUpValue = -joystick.getRawAxis(3);
-		joystickArmDownValue = -joystick.getRawAxis(2);
+		joystickLValue = -joystick0.getRawAxis(1);
+		joystickRValue = -joystick0.getRawAxis(5);
+		joystickArmValue = -joystick1.getRawAxis(1);
+		buttonGripperIntake = joystick1.getRawButton(1);
+		buttonGripperIntake = joystick1.getRawButton(2);
 		
 		if(((joystickLValue > 0 && joystickRValue > 0) || (joystickLValue < 0 && joystickRValue < 0)) && (joystickLValue - joystickRValue <= 0.3 && joystickLValue - joystickRValue >= -0.3))
 		{
@@ -130,7 +132,9 @@ public class Robot extends IterativeRobot {
 		}
 		myDrive.tankDrive(joystickLValue, joystickRValue);
 		myDrive.tankDrive((joystickArmUpValue/100)*30,(joystickArmUpValue/100)*30);
-		
+		if(buttonGripperIntake){
+			myDrive.tankDrive();
+		}
 	}
 
 	/**
