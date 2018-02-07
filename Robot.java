@@ -24,6 +24,7 @@ public class Robot extends IterativeRobot {
 	double joystickLValue;
 	double joystickRValue;
 	double joystickArmValue;
+	double joystickWheelSpeedValue;
 	boolean buttonGripperIntake;
 	boolean buttonGripperRelease;
 	
@@ -121,8 +122,9 @@ public class Robot extends IterativeRobot {
 		joystickLValue = -joystick0.getRawAxis(1);
 		joystickRValue = -joystick0.getRawAxis(5);
 		joystickArmValue = -joystick1.getRawAxis(1);
+		joystickWheelSpeedValue = -joystick1.getRawAxis(3)+1;
 		buttonGripperIntake = joystick1.getRawButton(1);
-		buttonGripperIntake = joystick1.getRawButton(2);
+		buttonGripperRelease = joystick1.getRawButton(2);
 		
 		if(((joystickLValue > 0 && joystickRValue > 0) || (joystickLValue < 0 && joystickRValue < 0)) && (joystickLValue - joystickRValue <= 0.3 && joystickLValue - joystickRValue >= -0.3))
 		{
@@ -133,7 +135,9 @@ public class Robot extends IterativeRobot {
 		myDrive.tankDrive(joystickLValue, joystickRValue);
 		myDrive.tankDrive((joystickArmUpValue/100)*30,(joystickArmUpValue/100)*30);
 		if(buttonGripperIntake){
-			myDrive.tankDrive();
+			myDrive.tankDrive(joystickWheelSpeedValue,joystickWheelSpeedValue);
+		} else if(buttonGripperRelease){
+			myDrive.tankDrive(-joystickWheelSpeedValue,-joystickWheelSpeedValue)
 		}
 	}
 
