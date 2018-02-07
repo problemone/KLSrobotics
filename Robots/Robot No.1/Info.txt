@@ -1,0 +1,2 @@
+This Robot is the First Robot Built By Team 6962. All code in here is written by Nicholas Versic & Parth Iyer.
+This Robot picks up milk crates and moves them. All objects will be lifted to a max height of 55".
