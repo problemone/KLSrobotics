@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * directory.
  */
 public class Robot extends IterativeRobot {
+	long start;
 	RobotDrive myDrive;
 	final String defaultAuto = "Default";
 	final String customAuto = "My Auto";
@@ -22,9 +23,12 @@ public class Robot extends IterativeRobot {
 
 	double joystickLValue;
 	double joystickRValue;
+	double joystickArmUpValue;
+	double joystickArmDownValue;
+	double joystickIntakeVale;
+	double joystickShoot;
 
-	Joystick joystickL = new Joystick(0);
-	//Joystick joystickR = new Joystick(2);
+	Joystick joystick = new Joystick(0);
 	
 	String autoSelected;
 	SendableChooser<String> chooser = new SendableChooser<>();
@@ -58,15 +62,8 @@ public class Robot extends IterativeRobot {
 		// autoSelected = SmartDashboard.getString("Auto Selector",
 		// defaultAuto);
 		System.out.println("Auto selected: " + autoSelected);
-		for(int i = 0; i <= 1000; i++) {
-			joystickRValue = 0.54;
-			joystickLValue = 0.5;
-			myDrive.tankDrive(joystickLValue, joystickRValue);
-		}
-		
-		
+		start = System.currentTimeMillis();
 	}
-
 	/**
 	 * This function is called periodically during autonomous
 	 */
@@ -74,20 +71,16 @@ public class Robot extends IterativeRobot {
 	@Override
 	
 	public void autonomousPeriodic() {
-		i++;
-		if(i <= 100) {
+		long current = System.currentTimeMillis();
+		if(current - start <= 3000) {
+			myDrive.arcadeDrive(0.75,0.1);
+		}else if(current - start >= 3000 && current - start < 4000/*this number is variable*/) {
 			myDrive.arcadeDrive(1,0);
 		}
 		else
 		{
 			myDrive.arcadeDrive(0,0);
-		}
-		/*int i = 0;
-		while(i<1) {
-			myDrive.arcadeDrive(1,0);
-			i++;
-		}*/
-		
+		}	
 	}
 
 	/**
@@ -124,8 +117,11 @@ public class Robot extends IterativeRobot {
 				joystickLValue -= joystickL.getRawAxis(0);
 			}
 		}*/
-		joystickLValue = -joystickL.getRawAxis(1);
-		joystickRValue = -joystickL.getRawAxis(5);
+		joystickLValue = -joystick.getRawAxis(1);
+		joystickRValue = -joystick.getRawAxis(5);
+		joystickArmUpValue = -joystick.getRawAxis(3);
+		joystickArmDownValue = -joystick.getRawAxis(2);
+		
 		if(((joystickLValue > 0 && joystickRValue > 0) || (joystickLValue < 0 && joystickRValue < 0)) && (joystickLValue - joystickRValue <= 0.3 && joystickLValue - joystickRValue >= -0.3))
 		{
 			
@@ -133,6 +129,7 @@ public class Robot extends IterativeRobot {
 				joystickLValue = joystickRValue;
 		}
 		myDrive.tankDrive(joystickLValue, joystickRValue);
+		
 	}
 
 	/**
