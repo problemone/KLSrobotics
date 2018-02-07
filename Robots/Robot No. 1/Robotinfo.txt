@@ -1,0 +1,4 @@
+FRC:
+First Power UP 2018:
+
+This Robot Named ________ is capable of picking up milk crates and moving them to a diferent point and drop the milk crates.
