@@ -21,6 +21,8 @@ public class Robot extends IterativeRobot {
 	final String defaultAuto = "Default";
 	final String customAuto = "My Auto";
 	int i = 0;
+	int switchSide = 1;
+	int driverStation = 1;
 
 	double joystickLValue;
 	double joystickRValue;
@@ -76,11 +78,19 @@ public class Robot extends IterativeRobot {
 	
 	public void autonomousPeriodic() {
 		long current = System.currentTimeMillis();
-		if(current - start <= 3000) {
+		if(current - start <= 1500) {
 			myDrive.arcadeDrive(0.75,0.1);
-		}else if(current - start >= 3000 && current - start < 4000/*this number is variable*/) {
-			myDrive.arcadeDrive(1,0);
-		}
+		}else if(switchSide == 0){
+			if(driverStation == 1){
+				if(current - start <= 4500)
+					myDrive.arcadeDrive(0.75,0.1);
+				else if(current - start <= 4750){
+					myDrive.arcadeDrive(0,-1);
+				}
+			}else if(){
+				
+			}
+		}else if(switchSide == 1)
 		else
 		{
 			myDrive.arcadeDrive(0,0);
