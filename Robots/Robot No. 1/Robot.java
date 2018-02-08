@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Robot extends IterativeRobot {
 	long start;
 	RobotDrive myDrive;
+	RobotDrive armDrive;
 	final String defaultAuto = "Default";
 	final String customAuto = "My Auto";
 	int i = 0;
@@ -45,6 +46,7 @@ public class Robot extends IterativeRobot {
 		chooser.addObject("My Auto", customAuto);
 		SmartDashboard.putData("Auto choices", chooser);
 		myDrive = new RobotDrive(0, 1);
+		armDrive = new RobotDrive(2);
 	}
  
 	/**
@@ -133,6 +135,7 @@ public class Robot extends IterativeRobot {
 				joystickLValue = joystickRValue;
 		}
 		myDrive.tankDrive(joystickLValue, joystickRValue);
+		myDrive.arcadeDrive(joystickArmValue,0);
 		myDrive.tankDrive((joystickArmUpValue/100)*30,(joystickArmUpValue/100)*30);
 		if(buttonGripperIntake){
 			myDrive.tankDrive(joystickWheelSpeedValue,joystickWheelSpeedValue);
