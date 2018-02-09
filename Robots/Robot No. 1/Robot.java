@@ -87,10 +87,13 @@ public class Robot extends IterativeRobot {
 				else if(current - start <= 4750){
 					myDrive.arcadeDrive(0,-1);
 				}
-			}else if(){
-				
+			}else if(driverStation == 2){
+				if(current - start <= 1750){
+					myDrive.arcadeDrive(0,1);
+				}else if(current - start <= )
 			}
-		}else if(switchSide == 1)
+		}else if(switchSide == 1){
+		}
 		else
 		{
 			myDrive.arcadeDrive(0,0);
@@ -112,6 +115,7 @@ public class Robot extends IterativeRobot {
 				joystickLValue += joystickL.getRawAxis(0);
 				joystickRValue -= joystickL.getRawAxis(0);
 			}
+r
 			else if(joystickL.getRawAxis(3) < joystickL.getRawAxis(2))
 			{
 				joystickLValue -= joystickL.getRawAxis(0);
