@@ -1,8 +1,11 @@
 package org.usfirst.frc.team6962.robot;
 
+import com.ctre.CANTalon;
+
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.RobotDrive;
+import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -17,16 +20,17 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Robot extends IterativeRobot {
 	long start;
 	RobotDrive myDrive;
-	RobotDrive armDrive;
 	final String defaultAuto = "Default";
 	final String customAuto = "My Auto";
 	int i = 0;
-	int switchSide = 1;
+	int switchSide = 0;
 	int driverStation = 1;
 
 	double joystickLValue;
 	double joystickRValue;
 	double joystickArmValue;
+	boolean joystickGripIn;
+	boolean joystickGripOut;
 	double joystickWheelSpeedValue;
 	boolean buttonGripperIntake;
 	boolean buttonGripperRelease;
@@ -34,6 +38,10 @@ public class Robot extends IterativeRobot {
 
 	Joystick joystick0 = new Joystick(0);
 	Joystick joystick1 = new Joystick(1);
+	Spark armSpark = new Spark(2);
+	Encoder armEnc = new Encoder
+	//CANTalon leftTalon = new CANTalon(0);
+	//CANTalon rightTalon = new CANTalon(1);
 	
 	String autoSelected;
 	SendableChooser<String> chooser = new SendableChooser<>();
@@ -48,7 +56,6 @@ public class Robot extends IterativeRobot {
 		chooser.addObject("My Auto", customAuto);
 		SmartDashboard.putData("Auto choices", chooser);
 		myDrive = new RobotDrive(0, 1);
-		armDrive = new RobotDrive(2);
 	}
  
 	/**
@@ -90,15 +97,66 @@ public class Robot extends IterativeRobot {
 			}else if(driverStation == 2){
 				if(current - start <= 1750){
 					myDrive.arcadeDrive(0,1);
-				}else if(current - start <= )
-			}
+				}else if(current - start <= 3250) {
+					myDrive.arcadeDrive(0.75,0.1);
+				}else if(current - start <= 3500) {
+					myDrive.arcadeDrive(0,-1);
+				}else if(current - start <=6500) {
+					myDrive.arcadeDrive(0.75,0.1);
+				}else if(current - start <= 6750) {
+					myDrive.arcadeDrive(0,-1);
+				}
+			}else if(driverStation == 3){
+				if(current - start <= 1750){
+					myDrive.arcadeDrive(0,1);
+				}else if(current - start <= 6250) {
+					myDrive.arcadeDrive(0.75,0.1);
+				}else if(current - start <= 6500) {
+					myDrive.arcadeDrive(0,-1);
+				}else if(current - start <=9500) {
+					myDrive.arcadeDrive(0.75,0.1);
+				}else if(current - start <= 9750) {
+					myDrive.arcadeDrive(0,-1);
+				}
 		}else if(switchSide == 1){
+			if(driverStation == 3){
+				if(current - start <= 4500)
+					myDrive.arcadeDrive(0.75,0.1);
+				else if(current - start <= 4750){
+					myDrive.arcadeDrive(0,1);
+				}
+			}else if(driverStation == 2){
+				if(current - start <= 1750){
+					myDrive.arcadeDrive(0,-1);
+				}else if(current - start <= 3250) {
+					myDrive.arcadeDrive(0.75,0.1);
+				}else if(current - start <= 3500) {
+					myDrive.arcadeDrive(0,1);
+				}else if(current - start <=6500) {
+					myDrive.arcadeDrive(0.75,0.1);
+				}else if(current - start <= 6750) {
+					myDrive.arcadeDrive(0,1);
+				}
+			}else if(driverStation == 3){
+				if(current - start <= 1750){
+					myDrive.arcadeDrive(0,-1);
+				}else if(current - start <= 6250) {
+					myDrive.arcadeDrive(0.75,0.1);
+				}else if(current - start <= 6500) {
+					myDrive.arcadeDrive(0,1);
+				}else if(current - start <=9500) {
+					myDrive.arcadeDrive(0.75,0.1);
+				}else if(current - start <= 9750) {
+					myDrive.arcadeDrive(0,1);
+				}
+		}
 		}
 		else
 		{
 			myDrive.arcadeDrive(0,0);
-		}	
-	}
+		}
+	}	
+}
 
 	/**
 	 * This function is called periodically during operator control
@@ -138,24 +196,37 @@ r
 		joystickLValue = -joystick0.getRawAxis(1);
 		joystickRValue = -joystick0.getRawAxis(5);
 		joystickArmValue = -joystick1.getRawAxis(1);
-		joystickWheelSpeedValue = -joystick1.getRawAxis(3)+1;
-		buttonGripperIntake = joystick1.getRawButton(1);
-		buttonGripperRelease = joystick1.getRawButton(2);
+		joystickGripIn = joystick1.getRawButton(0);
+		joystickGripOut = joystick1.getRawButton(1);
 		
+		//joystickWheelSpeedValue = -joystick1.getRawAxis(3)+1;
+		/*buttonGripperIntake = joystick1.getRawButton(1);
+		buttonGripperRelease = joystick1.getRawButton(2);
+		*/
 		if(((joystickLValue > 0 && joystickRValue > 0) || (joystickLValue < 0 && joystickRValue < 0)) && (joystickLValue - joystickRValue <= 0.3 && joystickLValue - joystickRValue >= -0.3))
 		{
-			
-				joystickRValue = joystickLValue*(1+0.04/0.5);
-				joystickLValue = joystickRValue;
+			joystickRValue = joystickLValue*(1+0.04/0.5);
+			joystickLValue = joystickRValue;
 		}
 		myDrive.tankDrive(joystickLValue, joystickRValue);
-		myDrive.arcadeDrive(joystickArmValue,0);
-		myDrive.tankDrive((joystickArmUpValue/100)*30,(joystickArmUpValue/100)*30);
+		armSpark.set(joystickArmValue);
+		/*if(joystickGripIn)
+		{
+			leftTalon.set(1);
+			rightTalon.set(-1);
+		}
+		else if(joystickGripOut)
+		{
+			leftTalon.set(-1);
+			rightTalon.set(1);
+		}*/
+		/*myDrive.arcadeDrive(joystickArmValue,0);
+		myDrive.tankDrive((joystickArmValue*0.1),(joystickArmValue*0.1));
 		if(buttonGripperIntake){
 			myDrive.tankDrive(joystickWheelSpeedValue,joystickWheelSpeedValue);
-		} else if(buttonGripperRelease){
-			myDrive.tankDrive(-joystickWheelSpeedValue,-joystickWheelSpeedValue)
-		}
+		}else if(buttonGripperRelease){
+			myDrive.tankDrive(-joystickWheelSpeedValue,-joystickWheelSpeedValue);
+		}*/
 	}
 
 	/**
