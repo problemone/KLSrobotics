@@ -163,36 +163,7 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void teleopPeriodic() {
-		/*
-		joystickRValue = joystickL.getRawAxis(3) - joystickL.getRawAxis(2);
-		joystickLValue = joystickL.getRawAxis(3) - joystickL.getRawAxis(2);
-		if(joystickL.getRawAxis(0) > 0)
-		{
-			if(joystickL.getRawAxis(3) >= joystickL.getRawAxis(2))
-			{
-				joystickLValue += joystickL.getRawAxis(0);
-				joystickRValue -= joystickL.getRawAxis(0);
-			}
-r
-			else if(joystickL.getRawAxis(3) < joystickL.getRawAxis(2))
-			{
-				joystickLValue -= joystickL.getRawAxis(0);
-				joystickRValue += joystickL.getRawAxis(0);
-			}
-		}
-		else if(joystickL.getRawAxis(0) < 0)
-		{
-			if(joystickL.getRawAxis(3) >= joystickL.getRawAxis(2))
-			{
-				joystickRValue -= joystickL.getRawAxis(0);
-				joystickLValue += joystickL.getRawAxis(0);
-			}
-			else if(joystickL.getRawAxis(3) < joystickL.getRawAxis(2))
-			{
-				joystickRValue += joystickL.getRawAxis(0);
-				joystickLValue -= joystickL.getRawAxis(0);
-			}
-		}*/
+		
 		joystickLValue = -joystick0.getRawAxis(1);
 		joystickRValue = -joystick0.getRawAxis(5);
 		joystickArmValue = -joystick1.getRawAxis(1);
