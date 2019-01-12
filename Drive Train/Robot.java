@@ -1,7 +1,5 @@
 package org.usfirst.frc.team6962.robot;
 
-import com.ctre.CANTalon;
-
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.RobotDrive;
@@ -38,7 +36,6 @@ public class Robot extends IterativeRobot {
 
 	Joystick joystick0 = new Joystick(0);
 	Joystick joystick1 = new Joystick(1);
-	Encoder armEnc = new Encoder
 	
 	String autoSelected;
 	SendableChooser<String> chooser = new SendableChooser<>();
@@ -79,7 +76,6 @@ public class Robot extends IterativeRobot {
 	
 	public void autonomousPeriodic() {
 	}	
-}
 
 	/**
 	 * This function is called periodically during operator control
