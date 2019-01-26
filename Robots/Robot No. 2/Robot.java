@@ -16,6 +16,10 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * directory.
  */
 public class Robot extends IterativeRobot {
+	int P, I, D = 1;
+	int integral, previous_error, setpoint = 0;
+	
+	
 	long start;
 	RobotDrive myDrive;
 	final String defaultAuto = "Default";
@@ -40,10 +44,13 @@ public class Robot extends IterativeRobot {
 	String autoSelected;
 	SendableChooser<String> chooser = new SendableChooser<>();
 
+//	public 
+	
 	/**
 	 * This function is run when the robot is first started up and should be used
 	 * for any initialization code.
 	 */
+	
 	@Override
 	public void robotInit() {
 		chooser.addDefault("Default Auto", defaultAuto);
@@ -84,24 +91,19 @@ public class Robot extends IterativeRobot {
 	public void teleopPeriodic() {
 		
 		joystickLValue = joystick0.getRawAxis(1);
-		joystickRValue = joystick0.getRawAxis(1);
+		joystickRValue = joystick0.getRawAxis(1)*0.913;
 		
 		joystickArmValue = -joystick1.getRawAxis(1);
 		joystickGripIn = joystick1.getRawButton(0);
 		joystickGripOut = joystick1.getRawButton(1);
 		
 		// For Calibration of sides
-    if(((joystickLValue > 0 && joystickRValue > 0) || (joystickLValue < 0 && joystickRValue < 0)) && (joystickLValue - joystickRValue <= 0.3 && joystickLValue - joystickRValue >= -0.3))
-		{
-			joystickRValue = joystickLValue;
-			joystickLValue = joystickRValue;
-		}
-    	if(joystick0.getRawAxis(2) < -0.2)
+    	if(joystick0.getRawAxis(2) < -0.1)
     	{
-    		joystickLValue += joystick0.getRawAxis(2);
-    		joystickRValue -= joystick0.getRawAxis(2);
+    		joystickLValue -= joystick0.getRawAxis(2);
+    		joystickRValue += joystick0.getRawAxis(2);
     	}
-    	if(joystick0.getRawAxis(2) > 0.2)
+    	if(joystick0.getRawAxis(2) > 0.1)
     	{
     		joystickLValue -= joystick0.getRawAxis(2);
     		joystickRValue += joystick0.getRawAxis(2);
