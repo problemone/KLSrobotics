@@ -1,10 +1,8 @@
 package org.usfirst.frc.team6962.robot;
 
-import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.RobotDrive;
-import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -34,17 +32,10 @@ public class Robot extends IterativeRobot {
 	double joystickWheelSpeedValue;
 	boolean buttonGripperIntake;
 	boolean buttonGripperRelease;
-	boolean solenoidOn;
-	boolean enabled;
-	boolean pressureSwitch;
-	double current;
 	
 
 	Joystick joystick0 = new Joystick(0);
 	Joystick joystick1 = new Joystick(1);
-	Solenoid exampleSolenoid = new Solenoid(1);
-	Compressor c = new Compressor(0);
-	
 	
 	String autoSelected;
 	SendableChooser<String> chooser = new SendableChooser<>();
@@ -92,17 +83,12 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void teleopPeriodic() {
 		
-		c.setClosedLoopControl(true);
+		joystickLValue = joystick0.getRawAxis(1);
+		joystickRValue = joystick0.getRawAxis(1);
 		
-		joystickLValue = -joystick0.getRawAxis(1);
-		joystickRValue = -joystick0.getRawAxis(5);
 		joystickArmValue = -joystick1.getRawAxis(1);
 		joystickGripIn = joystick1.getRawButton(0);
 		joystickGripOut = joystick1.getRawButton(1);
-		solenoidOn = joystick1.getRawButton(3);
-		enabled = c.enabled();
-		pressureSwitch = c.getPressureSwitchValue();
-		current = c.getCompressorCurrent();
 		
 		// For Calibration of sides
     if(((joystickLValue > 0 && joystickRValue > 0) || (joystickLValue < 0 && joystickRValue < 0)) && (joystickLValue - joystickRValue <= 0.3 && joystickLValue - joystickRValue >= -0.3))
@@ -110,13 +96,15 @@ public class Robot extends IterativeRobot {
 			joystickRValue = joystickLValue;
 			joystickLValue = joystickRValue;
 		}
-    	if(solenoidOn == true)
-		{
-			exampleSolenoid.set(true);
-		}
-    	else
+    	if(joystick0.getRawAxis(2) < -0.2)
     	{
-    		exampleSolenoid.set(false);
+    		joystickLValue += joystick0.getRawAxis(2);
+    		joystickRValue -= joystick0.getRawAxis(2);
+    	}
+    	if(joystick0.getRawAxis(2) > 0.2)
+    	{
+    		joystickLValue -= joystick0.getRawAxis(2);
+    		joystickRValue += joystick0.getRawAxis(2);
     	}
 		myDrive.tankDrive(joystickLValue, joystickRValue);
 	}
