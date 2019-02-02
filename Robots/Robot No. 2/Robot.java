@@ -1,5 +1,6 @@
 package org.usfirst.frc.team6962.robot;
 
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.RobotDrive;
@@ -27,7 +28,11 @@ public class Robot extends IterativeRobot {
 	int i = 0;
 	int switchSide = 0;
 	int driverStation = 1;
-
+	int count = 0;
+	double proportional = 0.3;
+	double goal = 0;
+	
+	double eMeasure;
 	double joystickLValue;
 	double joystickRValue;
 	double joystickArmValue;
@@ -36,15 +41,23 @@ public class Robot extends IterativeRobot {
 	double joystickWheelSpeedValue;
 	boolean buttonGripperIntake;
 	boolean buttonGripperRelease;
-	
+	double error;
+	double runningSpeed = 0;
 
+	Encoder armEncoder = new Encoder(0, 1, true, Encoder.EncodingType.k4X);
+	
+	Spark gripperSpark = new Spark(2);
+	
 	Joystick joystick0 = new Joystick(0);
 	Joystick joystick1 = new Joystick(1);
 	
 	String autoSelected;
 	SendableChooser<String> chooser = new SendableChooser<>();
 
-//	public 
+	public void PID() 
+	{
+		
+	}
 	
 	/**
 	 * This function is run when the robot is first started up and should be used
@@ -57,6 +70,12 @@ public class Robot extends IterativeRobot {
 		chooser.addObject("My Auto", customAuto);
 		SmartDashboard.putData("Auto choices", chooser);
 		myDrive = new RobotDrive(0, 1);
+		armEncoder.setMaxPeriod(0.05);
+		armEncoder.setMinRate(10);
+		armEncoder.setDistancePerPulse(2.8125);
+		armEncoder.setSamplesToAverage(10);
+		armEncoder.reset();
+		
 	}
  
 	/**
@@ -89,6 +108,11 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void teleopPeriodic() {
+		error = 360 * goal;
+		count += armEncoder.get();
+		eMeasure = armEncoder.getDistance();
+		System.out.println(eMeasure);
+		runningSpeed = (error * proportional)/360;
 		
 		joystickLValue = joystick0.getRawAxis(1);
 		joystickRValue = joystick0.getRawAxis(1)*0.913;
@@ -96,6 +120,8 @@ public class Robot extends IterativeRobot {
 		joystickArmValue = -joystick1.getRawAxis(1);
 		joystickGripIn = joystick1.getRawButton(0);
 		joystickGripOut = joystick1.getRawButton(1);
+		
+		gripperSpark.set(runningSpeed);
 		
 		// For Calibration of sides
     	if(joystick0.getRawAxis(2) < -0.1)
