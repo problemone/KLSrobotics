@@ -108,10 +108,22 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void teleopPeriodic() {
-		error = 360 * goal;
+		if(joystick0.getRawButton(0))
+		{
+			goal = 1.0;
+		}
+		else if(joystick0.getRawButton(1))
+		{
+			goal = 0.0;
+		}
+		else if(joystick0.getRawButton(2))
+		{
+			goal = 0.5;
+		}
 		count += armEncoder.get();
 		eMeasure = armEncoder.getDistance();
 		System.out.println(eMeasure);
+		error = (360 * goal) - eMeasure;
 		runningSpeed = (error * proportional)/360;
 		
 		joystickLValue = joystick0.getRawAxis(1);
