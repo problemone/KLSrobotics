@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.Spark;
+import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -46,7 +47,8 @@ public class Robot extends IterativeRobot {
 
 	Encoder armEncoder = new Encoder(0, 1, true, Encoder.EncodingType.k4X);
 	
-	Spark gripperSpark = new Spark(2);
+	Talon leftTalon = new Talon(0);
+	Talon rightTalon = new Talon(1);
 	
 	Joystick joystick0 = new Joystick(0);
 	Joystick joystick1 = new Joystick(1);
@@ -108,15 +110,15 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void teleopPeriodic() {
-		if(joystick0.getRawButton(0))
+		if(joystick0.getRawButton(1))
 		{
 			goal = 1.0;
 		}
-		else if(joystick0.getRawButton(1))
+		else if(joystick0.getRawButton(2))
 		{
 			goal = 0.0;
 		}
-		else if(joystick0.getRawButton(2))
+		else if(joystick0.getRawButton(3))
 		{
 			goal = 0.5;
 		}
@@ -129,11 +131,12 @@ public class Robot extends IterativeRobot {
 		joystickLValue = joystick0.getRawAxis(1);
 		joystickRValue = joystick0.getRawAxis(1)*0.913;
 		
-		joystickArmValue = -joystick1.getRawAxis(1);
-		joystickGripIn = joystick1.getRawButton(0);
-		joystickGripOut = joystick1.getRawButton(1);
+//		joystickArmValue = -joystick1.getRawAxis(1);
+//		joystickGripIn = joystick1.getRawButton(0);
+//		joystickGripOut = joystick1.getRawButton(1);
 		
-		gripperSpark.set(runningSpeed);
+		leftTalon.set(0.5);
+		rightTalon.set(-0.5);
 		
 		// For Calibration of sides
     	if(joystick0.getRawAxis(2) < -0.1)
