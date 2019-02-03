@@ -42,6 +42,7 @@ public class Robot extends TimedRobot {
 	double proportional = 0.3;
 	double Integral = 0.2;
 	double goal = 0;
+	double gripperMovement;
 	
 	double eMeasure;
 	double joystickLValue;
@@ -164,9 +165,9 @@ public class Robot extends TimedRobot {
 //		joystickArmValue = -joystick1.getRawAxis(1);
 //		joystickGripIn = joystick1.getRawButton(0);
 //		joystickGripOut = joystick1.getRawButton(1);
-		
-		leftTalon.set(ControlMode.PercentOutput, 0.3);
-		rightTalon.set(ControlMode.PercentOutput, -0.3);
+		gripperMovement = joystick1.getRawAxis(2) - joystick1.getRawAxis(3);
+		leftTalon.set(ControlMode.PercentOutput, gripperMovement);
+		rightTalon.set(ControlMode.PercentOutput, -gripperMovement);
 		
 		// For Calibration of sides
     	if(joystick0.getRawAxis(2) < -0.1)
