@@ -1,19 +1,19 @@
-package org.usfirst.frc.team6962.robot;
+package frc.robot;
 
-import com.ctre.CANTalon;
-import edu.wpi.first.wpilibj.PWMTalonSRX;
+// import com.ctre.CANTalon;
+// import edu.wpi.first.wpilibj.PWMTalonSRX;
 import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.Spark;
 //import edu.wpi.first.wpilibj.Talon;
 //import edu.wpi.first.wpilibj.CANTalon;
 //import edu.wpi.first.wpilibj.SpeedController;
+import edu.wpi.first.wpilibj.TimedRobot;
 
-import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+// import edu.wpi.first.wpilibj.Timer;
+// import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+// import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -22,7 +22,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * creating this project, you must also update the manifest file in the resource
  * directory.
  */
-public class Robot extends IterativeRobot {
+public class Robot extends TimedRobot {
 	int P, I, D = 1;
 	int integral, previous_error, setpoint = 0;
 	
@@ -51,12 +51,14 @@ public class Robot extends IterativeRobot {
 	double error;
 	double runningSpeed = 0;
 	int integralTracker = 0;
+	double armSpeed = 0.0;
 	
 	Encoder armEncoder = new Encoder(0, 1, true, Encoder.EncodingType.k4X);
 	
-	PWMTalonSRX leftTalon = new PWMTalonSRX(0);
-	PWMTalonSRX rightTalon = new PWMTalonSRX(1);
-	
+	// PWMTalonSRX leftTalon = new PWMTalonSRX(0);
+	// PWMTalonSRX rightTalon = new PWMTalonSRX(1);
+	Spark armSpark = new Spark(2);
+
 	Joystick joystick0 = new Joystick(0);
 	Joystick joystick1 = new Joystick(1);
 	
@@ -84,7 +86,6 @@ public class Robot extends IterativeRobot {
 		armEncoder.setDistancePerPulse(2.8125);
 		armEncoder.setSamplesToAverage(10);
 		armEncoder.reset();
-		
 	}
  
 	/**
@@ -101,12 +102,12 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void autonomousInit() {
 //		autoSelected = chooser.getSelected();	System.out.println("Auto selected: " + autoSelected);
-		start = System.currentTimeMillis();
+		// start = System.currentTimeMillis();
 	}
 	/**
 	 * This function is called periodically during autonomous
 	 */
-	@SuppressWarnings("deprecation")
+	// @SuppressWarnings("deprecation")
 	@Override
 	
 	public void autonomousPeriodic() {
@@ -132,6 +133,10 @@ public class Robot extends IterativeRobot {
 			goal = 0.5;
 			integralTracker = 0;
 		}
+
+		armSpeed = joystick0.getRawAxis(0);
+		armSpark.set(armSpeed);
+
 		count = armEncoder.get();
 		eMeasure = armEncoder.getDistance();
 		System.out.println(eMeasure);
@@ -142,8 +147,8 @@ public class Robot extends IterativeRobot {
 		}
 		runningSpeed = ((error * proportional)/360) + ((integralTracker * Integral)/360);
 		
-		leftTalon.set(runningSpeed);
-		rightTalon.set(-runningSpeed);
+		// leftTalon.set(runningSpeed);
+		// rightTalon.set(-runningSpeed);
 		
 		joystickLValue = joystick0.getRawAxis(1);
 		joystickRValue = joystick0.getRawAxis(1)*0.913;
