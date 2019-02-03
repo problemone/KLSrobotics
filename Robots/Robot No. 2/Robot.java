@@ -165,8 +165,8 @@ public class Robot extends TimedRobot {
 //		joystickGripIn = joystick1.getRawButton(0);
 //		joystickGripOut = joystick1.getRawButton(1);
 		
-		leftTalon.set(ControlMode.PercentOutput, 1);
-		rightTalon.set(ControlMode.PercentOutput, -1);
+		leftTalon.set(ControlMode.PercentOutput, 0.3);
+		rightTalon.set(ControlMode.PercentOutput, -0.3);
 		
 		// For Calibration of sides
     	if(joystick0.getRawAxis(2) < -0.1)
