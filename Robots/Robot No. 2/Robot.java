@@ -4,6 +4,7 @@ package frc.robot;
 // import edu.wpi.first.wpilibj.PWMTalonSRX;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.Spark;
 // import edu.wpi.first.wpilibj.RobotDrive;
 // import edu.wpi.first.wpilibj.Spark;
 //import edu.wpi.first.wpilibj.Talon;
@@ -57,7 +58,7 @@ public class Robot extends TimedRobot {
 
 	// PWMTalonSRX leftTalon = new PWMTalonSRX(0);
 	// PWMTalonSRX rightTalon = new PWMTalonSRX(1);
-	// Spark armSpark = new Spark(2);
+	Spark armSpark = new Spark(2);
 
 	Joystick joystick0 = new Joystick(0);
 	Joystick joystick1 = new Joystick(1);
@@ -137,7 +138,8 @@ public class Robot extends TimedRobot {
 		}
 
 		armSpeed = joystick0.getRawAxis(1);
-		// armSpark.set(armSpeed);
+		System.out.println(armSpeed);
+		armSpark.set(armSpeed);
 
 		count = armEncoder.get();
 		eMeasure = armEncoder.getDistance();
