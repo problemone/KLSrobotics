@@ -5,6 +5,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Spark;
+import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.RobotDrive;
 // import edu.wpi.first.wpilibj.Spark;
 //import edu.wpi.first.wpilibj.Talon;
@@ -56,8 +57,8 @@ public class Robot extends TimedRobot {
 	
 	Encoder armEncoder = new Encoder(0, 1, true, Encoder.EncodingType.k4X);
 
-	// PWMTalonSRX leftTalon = new PWMTalonSRX(0);
-	// PWMTalonSRX rightTalon = new PWMTalonSRX(1);
+	Talon leftTalon = new Talon(0);
+	Talon rightTalon = new Talon(1);
 	Spark armSpark1 = new Spark(2);
 	Spark armSpark2 = new Spark(3);
 
