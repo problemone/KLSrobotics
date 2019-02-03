@@ -4,8 +4,8 @@ package frc.robot;
 // import edu.wpi.first.wpilibj.PWMTalonSRX;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.RobotDrive;
-import edu.wpi.first.wpilibj.Spark;
+// import edu.wpi.first.wpilibj.RobotDrive;
+// import edu.wpi.first.wpilibj.Spark;
 //import edu.wpi.first.wpilibj.Talon;
 //import edu.wpi.first.wpilibj.CANTalon;
 //import edu.wpi.first.wpilibj.SpeedController;
@@ -28,7 +28,7 @@ public class Robot extends TimedRobot {
 	
 	
 	long start;
-	RobotDrive myDrive;
+	// RobotDrive myDrive;
 	final String defaultAuto = "Default";
 	final String customAuto = "My Auto";
 	int i = 0;
@@ -51,24 +51,26 @@ public class Robot extends TimedRobot {
 	double error;
 	double runningSpeed = 0;
 	int integralTracker = 0;
-	double armSpeed = 0.0;
+	double armSpeed;
 	
 	Encoder armEncoder = new Encoder(0, 1, true, Encoder.EncodingType.k4X);
-	
+
 	// PWMTalonSRX leftTalon = new PWMTalonSRX(0);
 	// PWMTalonSRX rightTalon = new PWMTalonSRX(1);
-	Spark armSpark = new Spark(2);
+	// Spark armSpark = new Spark(2);
 
 	Joystick joystick0 = new Joystick(0);
 	Joystick joystick1 = new Joystick(1);
+
+	// CANTalon leftTalon = new CANTalon(0);
 	
 	String autoSelected;
 //	SendableChooser<String> chooser = new SendableChooser<>();
 
-	public void PID()
-	{
+	// public void PID()
+	// {
 		
-	}
+	// }
 	
 	/**
 	 * This function is run when the robot is first started up and should be used
@@ -80,7 +82,7 @@ public class Robot extends TimedRobot {
 //		chooser.addDefault("Default Auto", defaultAuto);
 //		chooser.addObject("My Auto", customAuto);
 //		SmartDashboard.putData("Auto choices", chooser);
-		myDrive = new RobotDrive(0, 1);
+		// myDrive = new RobotDrive(0, 1);
 		armEncoder.setMaxPeriod(0.05);
 		armEncoder.setMinRate(10);
 		armEncoder.setDistancePerPulse(2.8125);
@@ -134,8 +136,8 @@ public class Robot extends TimedRobot {
 			integralTracker = 0;
 		}
 
-		armSpeed = joystick0.getRawAxis(0);
-		armSpark.set(armSpeed);
+		armSpeed = joystick0.getRawAxis(1);
+		// armSpark.set(armSpeed);
 
 		count = armEncoder.get();
 		eMeasure = armEncoder.getDistance();
@@ -171,7 +173,7 @@ public class Robot extends TimedRobot {
     		joystickLValue -= joystick0.getRawAxis(2);
     		joystickRValue += joystick0.getRawAxis(2);
     	}
-		myDrive.tankDrive(joystickLValue, joystickRValue);
+		// myDrive.tankDrive(joystickLValue, joystickRValue);
 	}
 
 	/**
