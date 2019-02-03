@@ -1,12 +1,14 @@
 package frc.robot;
 
-// import com.ctre.CANTalon;
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 // import edu.wpi.first.wpilibj.PWMTalonSRX;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.RobotDrive;
+
 // import edu.wpi.first.wpilibj.Spark;
 //import edu.wpi.first.wpilibj.Talon;
 //import edu.wpi.first.wpilibj.CANTalon;
@@ -57,8 +59,8 @@ public class Robot extends TimedRobot {
 	
 	Encoder armEncoder = new Encoder(0, 1, true, Encoder.EncodingType.k4X);
 
-	Talon leftTalon = new Talon(0);
-	Talon rightTalon = new Talon(1);
+	TalonSRX leftTalon = new TalonSRX(0);
+	TalonSRX rightTalon = new TalonSRX(1);
 	Spark armSpark1 = new Spark(2);
 	Spark armSpark2 = new Spark(3);
 
@@ -163,8 +165,8 @@ public class Robot extends TimedRobot {
 //		joystickGripIn = joystick1.getRawButton(0);
 //		joystickGripOut = joystick1.getRawButton(1);
 		
-//		leftTalon.set(1);
-//		rightTalon.set(-1);
+		leftTalon.set(ControlMode.PercentOutput, 1);
+		rightTalon.set(ControlMode.PercentOutput, -1);
 		
 		// For Calibration of sides
     	if(joystick0.getRawAxis(2) < -0.1)
